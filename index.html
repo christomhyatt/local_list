@@ -81,9 +81,16 @@
             overflow: hidden;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease;
+            cursor: pointer;
         }
         .grid-item:hover {
             transform: scale(1.05);
+        }
+        .experience-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            height: 100%;
         }
         .grid-item img {
             width: 100%;
@@ -153,16 +160,16 @@
     <script>
         $(document).ready(function() {
             const experiences = [
-                { title: "Spear Fishing", location: "Bali, Indonesia", price: "$75", rating: 4, image: "pics/backcountry_rise.jpeg" },
-                { title: "Backcountry Ski Tour", location: "Whistler, Canada", price: "$150", rating: 4, image: "pics/backcountry_rise.jpeg" },
-                { title: "Avalanche Training", location: "Colorado, USA", price: "$200", rating: 4, image: "pics/backcountry_rise.jpeg" },
-                { title: "Ultra Running Experience", location: "Chamonix, France", price: "$100", rating: 5, image: "pics/backcountry_rise.jpeg" },
-                { title: "Traditional Cooking Class", location: "Tokyo, Japan", price: "$80", rating: 3, image: "pics/backcountry_rise.jpeg" },
-                { title: "Rock Climbing Adventure", location: "Yosemite, USA", price: "$120", rating: 2, image: "pics/backcountry_rise.jpeg" },
-                { title: "Surfing Lessons", location: "Gold Coast, Australia", price: "$60", rating: 4, image: "pics/backcountry_rise.jpeg" },
-                { title: "Scuba Diving Excursion", location: "Great Barrier Reef, Australia", price: "$180", rating: 4, image: "pics/backcountry_rise.jpeg" },
-                { title: "Mountain Biking Tour", location: "Moab, USA", price: "$90", rating: 5, image: "pics/backcountry_rise.jpeg" },
-                { title: "Wildlife Photography Workshop", location: "Serengeti, Tanzania", price: "$250", rating: 5, image: "pics/backcountry_rise.jpeg" }
+                { id: 1, title: "Spear Fishing", location: "Bali, Indonesia", price: "$75", rating: 4, image: "pics/backcountry_rise.jpeg" },
+                { id: 2, title: "Backcountry Ski Tour", location: "Whistler, Canada", price: "$150", rating: 4, image: "pics/backcountry_rise.jpeg" },
+                { id: 3, title: "Avalanche Training", location: "Colorado, USA", price: "$200", rating: 4, image: "pics/backcountry_rise.jpeg" },
+                { id: 4, title: "Ultra Running Experience", location: "Chamonix, France", price: "$100", rating: 5, image: "pics/backcountry_rise.jpeg" },
+                { id: 5, title: "Traditional Cooking Class", location: "Tokyo, Japan", price: "$80", rating: 3, image: "pics/backcountry_rise.jpeg" },
+                { id: 6, title: "Rock Climbing Adventure", location: "Yosemite, USA", price: "$120", rating: 2, image: "pics/backcountry_rise.jpeg" },
+                { id: 7, title: "Surfing Lessons", location: "Gold Coast, Australia", price: "$60", rating: 4, image: "pics/backcountry_rise.jpeg" },
+                { id: 8, title: "Scuba Diving Excursion", location: "Great Barrier Reef, Australia", price: "$180", rating: 4, image: "pics/backcountry_rise.jpeg" },
+                { id: 9, title: "Mountain Biking Tour", location: "Moab, USA", price: "$90", rating: 5, image: "pics/backcountry_rise.jpeg" },
+                { id: 10, title: "Wildlife Photography Workshop", location: "Serengeti, Tanzania", price: "$250", rating: 5, image: "pics/backcountry_rise.jpeg" }
             ];
 
             function createStarRating(rating) {
@@ -174,14 +181,20 @@
             }
 
             function createExperienceCard(experience) {
-                return $('<div>', { class: 'grid-item' }).append(
-                    $('<img>', { src: experience.image, alt: experience.title }),
-                    $('<div>', { class: 'title' }).append(
-                        $('<h3>').text(experience.title),
-                        $('<p>').text(experience.location)
-                    ),
-                    $('<div>', { class: 'price' }).text(experience.price),
-                    $('<div>', { class: 'rating' }).append(createStarRating(experience.rating))
+                return $('<a>', { 
+                    class: 'experience-link', 
+                    href: `experience.php?id=${experience.id}`,
+                    'data-id': experience.id
+                }).append(
+                    $('<div>', { class: 'grid-item' }).append(
+                        $('<img>', { src: experience.image, alt: experience.title }),
+                        $('<div>', { class: 'title' }).append(
+                            $('<h3>').text(experience.title),
+                            $('<p>').text(experience.location)
+                        ),
+                        $('<div>', { class: 'price' }).text(experience.price),
+                        $('<div>', { class: 'rating' }).append(createStarRating(experience.rating))
+                    )
                 );
             }
 
@@ -204,6 +217,16 @@
                 $.each(filteredExperiences, function(i, experience) {
                     $('#experienceGrid').append(createExperienceCard(experience));
                 });
+            });
+
+            $(document).on('click', '.experience-link', function(e) {
+                e.preventDefault(); // Prevent the default link behavior
+                const experienceId = $(this).data('id');
+                // Here you would typically navigate to the experience page
+                // For demonstration, we'll just log to console
+                console.log(`Navigating to experience ${experienceId}`);
+                // In a real application, you might use:
+                window.location.href = `experience.php?id=${experienceId}`;
             });
         });
     </script>
